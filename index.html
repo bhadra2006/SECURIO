@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SECURIO — Security Lifecycle Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Oregano:ital@0;1&family=Playfair+Display:wght@400;500;600;700&family=Quattrocento:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section id="authScreen" class="auth-screen">
+    <section class="landing-panel" id="landingPanel" aria-label="SECURIO introduction">
+      <div class="landing-orbit orbit-one"></div><div class="landing-orbit orbit-two"></div>
+      <div class="landing-content">
+        <p class="eyebrow landing-kicker">SECURITY LIFECYCLE INTELLIGENCE</p>
+        <button class="landing-wordmark" id="landingWordmark" type="button" aria-label="Continue to sign in">SECURIO</button>
+        <h1 class="landing-promise"><span>Understand this change to understand the risk.</span></h1>
+        <p class="landing-description">A quieter way to see what changed, why it matters, and what needs attention.</p>
+        <button class="auth-enter" id="enterWorkspace" type="button">Enter your workspace <span aria-hidden="true">↓</span></button>
+      </div>
+      <div class="landing-foot"><span>SECURIO</span><span>SECURITY LIFECYCLE INTELLIGENCE</span><span class="space-hint">PRESS SPACE TO CONTINUE&nbsp; ↗</span></div>
+    </section>
+    <section class="auth-login-panel" id="loginPanel" aria-label="Sign in or create an account">
+      <div class="auth-card-wrap"><form id="authForm" class="auth-card">
+        <div class="auth-brand"><span class="auth-mini-mark">S</span><div><strong>SECURIO</strong><small>Security Lifecycle Intelligence</small></div></div>
+        <p class="eyebrow" id="authEyebrow">WELCOME BACK</p><h2 id="authTitle">Sign in</h2><p class="auth-intro" id="authIntro">Sign in to return to your security workspace.</p>
+        <label id="nameField" class="auth-field hidden">Full name<input name="name" autocomplete="name" placeholder="Your name"></label>
+        <label class="auth-field">Email address<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+        <label class="auth-field">Password<input name="password" type="password" required minlength="8" autocomplete="current-password" placeholder="At least 8 characters"></label>
+        <button class="primary auth-submit" id="authSubmit" type="submit">Sign in <span>→</span></button>
+        <p id="authMessage" class="form-message" role="status"></p>
+        <p class="auth-switch"><span id="authSwitchText">New to SECURIO?</span> <button id="authSwitch" type="button">Create an account</button></p>
+      </form></div>
+    </section>
+  </section>
+  <div id="appShell" class="app-shell hidden">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">S</div><div><strong>SECURIO</strong><span>Security Lifecycle Intelligence</span></div></div>
+    <nav>
+      <button class="nav active" data-view="dashboard"><span class="nav-icon">⌂</span>Overview</button>
+      <button class="nav" data-view="items"><span class="nav-icon">◈</span>Security Items</button>
+      <button class="nav" data-view="timeline"><span class="nav-icon">◷</span>Lifecycle</button>
+      <button class="nav" data-view="add"><span class="nav-icon">＋</span>Add Security Item</button>
+      <button class="nav hidden" id="blindSpotsNav" data-view="blindspots"><span class="nav-icon">⌕</span>Blind-Spot Intelligence</button>
+      <button class="nav hidden" id="overridesNav" data-view="overrides"><span class="nav-icon">◉</span>Security Overrides</button>
+      <button class="nav hidden" id="usersNav" data-view="users"><span class="nav-icon">♙</span>User Approvals</button>
+    </nav>
+    <div class="side-note"><span class="pulse"></span><div><b id="signedInName">Signed in</b><small id="signedInRole">Personal workspace</small></div></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><p class="eyebrow">SECURITY LIFECYCLE INTELLIGENCE</p><h1 id="pageTitle">Security overview</h1></div>
+      <div class="topbar-actions"><span id="roleBadge" class="role-badge">USER</span><button class="secondary logout-button" id="logoutButton" type="button">Sign out ↗</button><button class="primary" id="globalAddButton" onclick="showView('add')"><span>＋</span> Add security item</button></div>
+    </header>
+
+    <section id="dashboard" class="view active-view">
+      <div class="hero">
+        <div class="hero-copy"><p class="eyebrow">ONE VIEW. THREE SIGNALS.</p><h2>Know when trust changes.</h2><p>SECURIO connects security drift, verification expiry and unresolved security debt into an explainable lifecycle story — what changed, why it matters, how urgent it is, and what to do next.</p></div>
+        <div class="hero-flow"><span>Baseline</span><b>→</b><span>Change</span><b>→</b><span>Explain</span><b>→</b><span>Action</span></div>
+      </div>
+      <div class="cards" id="summaryCards"></div>
+      <div class="grid">
+        <div class="panel"><div class="panel-head"><div><h3>Risk overview</h3><p>Current security state, prioritized by risk</p></div><span class="panel-mark">01</span></div><div id="riskList"></div></div>
+        <div class="panel"><div class="panel-head"><div><h3>Priority actions</h3><p>What needs attention first?</p></div><span class="panel-mark">02</span></div><div id="priorityList"></div></div>
+      </div>
+      <div class="panel story-panel" id="storyPanel"></div>
+    </section>
+
+    <section id="items" class="view">
+      <div class="section-intro"><div><p>Each item has a trusted baseline and a current state.</p></div></div>
+      <div class="table-wrap panel"><table><thead><tr><th>Security Item</th><th>Type</th><th>Owner</th><th>Signals</th><th>Risk</th><th>Action</th></tr></thead><tbody id="itemsTable"></tbody></table></div>
+    </section>
+
+    <section id="blindspots" class="view"><div class="section-intro"><div><p>Admin-only, explainable patterns across recorded security items. Findings are prompts for investigation, not proof of an attack.</p></div><button class="secondary" id="refreshBlindSpots" type="button">Refresh insights ↻</button></div><div class="cards" id="blindSpotSummary"></div><div id="blindSpotContent" class="timeline"></div><div class="panel sdg-panel"><p class="eyebrow">FUTURE DIRECTION</p><h3>Responsible security visibility</h3><div class="sdg-grid"><div><b>SDG 9 · Industry, Innovation and Infrastructure</b><p>Future integrations can support clearer oversight of resilient digital infrastructure.</p></div><div><b>SDG 16 · Peace, Justice and Strong Institutions</b><p>Audit history and traceable follow-up can support accountability and responsible access governance.</p></div></div><small>These are intended contributions, not claims that the prototype independently achieves the SDGs.</small></div></section>    <section id="overrides" class="view">
+      <div class="section-intro"><div><p>Record a justified, scoped, time-limited exception when a security issue cannot be fixed immediately. Overrides do not erase the underlying finding.</p></div><span class="signal">ADMIN ONLY</span></div>
+      <div class="grid">
+        <form id="overrideForm" class="form panel">
+          <div class="panel-head"><div><h3>Request an exception</h3><p>Every decision needs a reason and an expiry.</p></div><span class="panel-mark">01</span></div>
+          <label class="wide">Security item<select name="itemId" id="overrideItemSelect" required><option value="">Select an item</option></select></label>
+          <label class="wide">Reason for accepting the risk<textarea name="reason" rows="3" maxlength="500" placeholder="Why can this not be fixed immediately?" required></textarea></label>
+          <label class="wide">Scope / compensating measure<textarea name="scope" rows="2" maxlength="300" placeholder="What is allowed, and what limits reduce exposure?" required></textarea></label>
+          <label>Exception expires on<input type="date" name="expiresAt" id="overrideExpiry" required></label>
+          <label>Evidence or ticket reference<input name="evidence" maxlength="160" placeholder="e.g. CHANGE-1042 (optional)"></label>
+          <div class="form-footer"><p>Saved decisions are visible in the admin register.</p><button class="primary" type="submit">Record override →</button></div><p id="overrideMessage" class="form-message"></p>
+        </form>
+        <div class="panel"><div class="panel-head"><div><h3>Control rules</h3><p>What this control enforces in the prototype.</p></div><span class="panel-mark">02</span></div><div class="event-details override-rules"><div><small>NO SILENT DISMISSAL</small><p>The security issue remains visible after an exception is recorded.</p></div><div><small>TIME-LIMITED</small><p>Expired overrides are automatically labelled expired when the register is loaded.</p></div><div><small>TRACEABLE</small><p>Each record includes the admin, reason, scope, expiry and timestamp.</p></div></div></div>
+      </div>
+      <div class="panel override-register"><div class="panel-head"><div><h3>Override register</h3><p>Active, expired and revoked exceptions.</p></div><button class="secondary" type="button" id="refreshOverrides">Refresh ↻</button></div><div id="overrideList" class="timeline"></div></div>
+    </section>
+    <section id="users" class="view"><div class="section-intro"><div><p>Approve or reject new user account requests. Security items and baseline updates do not require admin approval.</p></div></div><div class="table-wrap panel"><table><thead><tr><th>Name</th><th>Email</th><th>Account status</th><th>Action</th></tr></thead><tbody id="usersTable"></tbody></table></div></section>
+
+    <section id="timeline" class="view">
+      <div class="section-intro"><div><p>See the current security state first. Important lifecycle signals stay visible without flooding the page with old events.</p></div></div>
+      <div class="lifecycle-summary panel"><div><span class="eyebrow">CURRENT SECURITY STATE</span><strong id="lifecycleHeadline">—</strong><small id="lifecycleSubline">—</small></div><div class="lifecycle-counts" id="lifecycleCounts"></div></div>
+      <div id="timelineContent" class="timeline"></div>
+    </section>
+
+    <section id="add" class="view">
+      <div class="section-intro"><div><p>Choose the security item type first. SECURIO then shows only the fields relevant to that type.</p></div></div>
+      <form id="itemForm" class="form panel">
+        <div class="form-top"><label class="wide">Item name<input name="name" placeholder="e.g. Payment API / Anu Access / Office Laptop" required></label><label>Type<select id="typeSelect" name="type"><option>User Access</option><option>API Credential</option><option>Trusted Device</option><option>Vendor Access</option><option>Database Permission</option></select></label></div>
+        <div class="state-grid single-state-grid">
+          <div class="state-card"><div class="state-title"><span>01</span><div><h3>Initial security state</h3><p>Enter the current details. SECURIO saves this snapshot as your initial baseline automatically.</p></div></div><div id="currentFields" class="dynamic-fields"></div></div>
+        </div>
+        <div class="form-footer"><p><b>How it works:</b> SECURIO saves your initial state as the baseline. Later, update the current state from Security Items to detect drift.</p><button class="primary" type="submit">Register security item <span>→</span></button></div>
+        <p id="formMessage" class="form-message"></p>
+      </form>
+    </section>
+  </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
